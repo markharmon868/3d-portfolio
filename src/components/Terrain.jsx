@@ -1,7 +1,7 @@
 import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
 
-const path = "models/terrain.glb";
+const path = "/models/terrain.glb";
 
 export const Terrain = () => {
     const { scene } = useGLTF(path);

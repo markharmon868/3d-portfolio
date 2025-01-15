@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import { useRef, useEffect } from "react"
 import { useFrame } from "@react-three/fiber";
 
-const path = "models/water.glb";
+const path = "/models/water.glb";
 
 export const Water = () => {
     const { scene, animations } = useGLTF(path);
