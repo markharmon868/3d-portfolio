@@ -2,9 +2,10 @@ import { Box, Sphere, OrbitControls } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
 import { Terrain } from "./Terrain.jsx";
-import { PlayerController } from "./PlayerController.jsx";
 import { GameController } from "./GameController.jsx";
 import { Docks } from "./Docks.jsx";
+import { Road } from "./Road.jsx";
+import { Water } from "./Water.jsx";
 
 
 export const Experience = () => {
@@ -16,7 +17,9 @@ export const Experience = () => {
       <GameController/>
 
       <Terrain />
+      <Road />
       <Docks />
+      <Water />
     </>
   );
 };

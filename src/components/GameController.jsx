@@ -22,7 +22,7 @@ export const GameController = () => {
         // Set player position 2 units to the right of the vehicle
         setPlayerStartPosition([
             vehiclePosition.x + 2,
-            vehiclePosition.y,
+            vehiclePosition.y - 7,
             vehiclePosition.z
         ]);
 

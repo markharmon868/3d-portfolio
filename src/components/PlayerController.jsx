@@ -194,7 +194,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                 <Text
                     position={[-2, 10, -37]} // Position relative to player
                     rotation = {[0, Math.PI, 0]}
-                    fontSize={1}
+                    fontSize={0.5}
                     color="white"
                     anchorX="center"
                     anchorY="middle"
@@ -202,7 +202,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                     outlineWidth={0.1}
                     outlineColor="black"
                 >
-                    This is a popup. Press "O" to close it.
+                    Welcome to my Portfolio, this is a stylized representation of the lagoon in my hometown. Along the road you will find different stops that show some of my projects. Press "o" to close this tab, and "e" when you are close to the car to drive around.
                 </Text>
             )}
         

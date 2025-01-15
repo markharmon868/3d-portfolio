@@ -10,7 +10,7 @@ export const VehicleController = ({ vehicleRef, onExitVehicle }) => {
 
     const BASE_ACCELERATION = 15; // Forward/backward force
     const FRICTION = 0.99; // Friction for gradual deceleration
-    const STEERING_SPEED = MathUtils.degToRad(1.7);
+    const STEERING_SPEED = MathUtils.degToRad(1);
     const BREAK_FORCE = 0.985; // Gradual deceleration when moving forward
 
     const container = useRef();
