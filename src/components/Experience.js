@@ -1,11 +1,11 @@
 import { Box, Sphere, OrbitControls } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
-import { Terrain } from "./Terrain.jsx";
-import { GameController } from "./GameController.jsx";
-import { Docks } from "./Docks.jsx";
-import { Road } from "./Road.jsx";
-import { Water } from "./Water.jsx";
+import { Terrain } from "./Terrain.js";
+import { GameController } from "./GameController.js";
+import { Docks } from "./Docks.js";
+import { Road } from "./Road.js";
+import { Water } from "./Water.js";
 
 
 export const Experience = () => {
