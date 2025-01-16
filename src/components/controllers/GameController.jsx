@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { PlayerController } from "./PlayerController";
-import { Vehicle } from "./Vehicle";
+import { Vehicle } from "../assets/Vehicle";
 import { VehicleController } from "./VehicleController";
 
 export const GameController = () => {

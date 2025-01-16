@@ -1,11 +1,12 @@
 import { Box, Sphere, OrbitControls } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
-import { Terrain } from "./Terrain";
-import { GameController } from "./GameController";
-import { Docks } from "./Docks";
-import { Road } from "./Road";
-import { Water } from "./Water";
+import { Terrain } from "./lagoon/Terrain";
+import { GameController } from "./controllers/GameController";
+import { Docks } from "./lagoon/Docks";
+import { Road } from "./lagoon/Road";
+import { Water } from "./lagoon/Water";
+
 
 
 export const Experience = () => {
@@ -13,7 +14,9 @@ export const Experience = () => {
     <>
       {/* Scene setup */}
       <ambientLight intensity={0.9} />
-      <directionalLight position={[-10, 10, 0]} intensity={0.4} />
+      <hemisphereLight intensity={0.3} color={"#a8c7ff"}/>
+      <directionalLight position={[-10, 10, 0]} intensity={0.2} />
+      <spotLight position={[0, 100, -60]} angle={75} color={"#ffa95c"} intensity={40} castShadow />
       <GameController/>
 
       <Terrain />

@@ -5,23 +5,27 @@ import { Vector3, MathUtils } from "three";
 import { useFrame, createPortal } from "@react-three/fiber";
 import { useControls } from "leva";
 import { degToRad } from "three/src/math/MathUtils";
-import { Player } from "./Player";
+import { Player } from "../assets/Player";
 
 
 export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPosition}, ref) => {
 
     const ypos = 10;
 
-    const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED} = useControls("Character Control", {
-        WALK_SPEED: {value: 2.1, min: 0.1, max: 4, step: 0.1},
-        RUN_SPEED: {value: 4.2, min: 0.2, max: 12, step: 0.1},
-        ROTATION_SPEED: {
-            value: degToRad(0.5),
-            min: degToRad(0.1),
-            max: degToRad(5),
-            step: degToRad(0.1),
-        },
-    });
+    // const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED} = useControls("Character Control", {
+    //     WALK_SPEED: {value: 2.1, min: 0.1, max: 4, step: 0.1},
+    //     RUN_SPEED: {value: 4.2, min: 0.2, max: 12, step: 0.1},
+    //     ROTATION_SPEED: {
+    //         value: degToRad(0.5),
+    //         min: degToRad(0.1),
+    //         max: degToRad(5),
+    //         step: degToRad(0.1),
+    //     },
+    // });
+    const WALK_SPEED = 4;
+    const RUN_SPEED = 8;
+    const ROTATION_SPEED = degToRad(0.8);
+
 
     // refs
     const rb = useRef();
@@ -43,7 +47,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
     const [, get] = useKeyboardControls();
     var hasEnteredVehicle = false;
 
-    const [showPopup, setShowPopup] = useState(false); // State for popup visibility
+    const [showPopup, setShowPopup] = useState(true); // State for popup visibility
 
 
 
@@ -70,11 +74,12 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                     // console.log("Not near vehicle");
                 }
             };
-            if (hasEnteredVehicle) {
+            if (vehicleRef.current) {
+                console.log(vehicleRef.current);
                 const vehiclePosition = vehicleRef.current.translation();
                 const distance = playerPosition.distanceTo(vehiclePosition);
                 console.log(distance);
-                if (distance < 6) {
+                if (distance < 10) {
                     isNearVehicle = true;
                     console.log("Near vehicle");
                 } else {
@@ -217,7 +222,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                         <Player scale={[1,1,1]} position={[0, ypos-1.85, 0]} animation={animation}/>
                     </group>
                 </group>
-                <CapsuleCollider args = {[0.55, 0.3]} position={[0, ypos-1, 0]} /> 
+                <CapsuleCollider args = {[0.55, 0.3]} position={[0, ypos-1, 0]} friction={10}/> 
             </RigidBody>
         </>
     );
