@@ -32,7 +32,7 @@ export const GameController = () => {
     return (
         <>
             {/* Vehicle */}
-            <Vehicle ref={vehicleRef} position={[0, 8, -60]} scale={[1.75,1.75,1.75]} />
+            <Vehicle ref={vehicleRef} position={[0, 8, -62]} rotation = {[0, Math.PI * 0.25, 0]} scale={[1.75,1.75,1.75]} />
 
             {/* Controllers */}
             {activeController === "player" && (

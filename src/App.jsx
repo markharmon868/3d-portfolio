@@ -3,7 +3,7 @@ import { Experience } from "./components/Experience";
 import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
 import { KeyboardControls, Loader } from "@react-three/drei";
-import { Perf } from "r3f-perf";
+// import { Perf } from "r3f-perf";
 
 
 function App() {
@@ -18,18 +18,39 @@ function App() {
   ]
 
   return (
-    <KeyboardControls map={keyboardMap}>
-    <Canvas shadows camera={{ position: [10, 10, 5], fov: 30 }}>
-      <Perf position="top-left"/>
-      <color attach="background" args={["#a8c7ff"]} />
-      <Suspense fallback={null}>
-        <Physics debug={false}>
-          <Experience />
-        </Physics>
-      </Suspense>
-    </Canvas>
-    <Loader />
-    </KeyboardControls>
+    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+      <KeyboardControls map={keyboardMap}>
+      <Canvas shadows camera={{ position: [10, 10, 5], fov: 30 }}>
+        {/* <Perf position="top-left"/> */}
+        <color attach="background" args={["#a8c7ff"]} />
+        <Suspense fallback={null}>
+          <Physics debug={false}>
+            <Experience />
+          </Physics>
+        </Suspense>
+      </Canvas>
+      <Loader />
+      </KeyboardControls>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20px", // Adjust distance from the bottom of the screen
+          left: "20px",   // Adjust distance from the left of the screen
+          pointerEvents: "none", // Allow clicks to pass through
+          zIndex: 1000,  // Ensure it stays above the canvas
+        }}
+      >
+        <img
+          src="/controls-overlay.png" // Replace with your image path
+          alt="Overlay"
+          style={{
+            width: "300px",  // Set the width of the image
+            height: "auto",  // Maintain the aspect ratio
+            opacity: 0.8,    // Adjust transparency
+          }}
+        />
+      </div>
+    </div>
     
   );
 }

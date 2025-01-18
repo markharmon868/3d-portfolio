@@ -199,15 +199,16 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                 <Text
                     position={[-2, 10, -37]} // Position relative to player
                     rotation = {[0, Math.PI, 0]}
-                    fontSize={0.5}
+                    fontSize={0.7}
                     color="white"
                     anchorX="center"
                     anchorY="middle"
                     maxWidth={10}
                     outlineWidth={0.1}
                     outlineColor="black"
+                    textAlign="center"
                 >
-                    Welcome to my Portfolio, this is a stylized representation of the lagoon in my hometown. Along the road you will find different stops that show some of my projects. Press "o" to close this tab, and "e" when you are close to the car to drive around.
+                    Welcome to my version of the Bolinas-Stinson Lagoon. Drive around and explore my projects!
                 </Text>
             )}
         

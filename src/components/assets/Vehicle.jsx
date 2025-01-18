@@ -3,7 +3,7 @@ import React, { forwardRef, useRef, useImperativeHandle } from "react";
 import { Capsule, useGLTF } from "@react-three/drei";
 import { CapsuleCollider } from "@react-three/rapier";
 
-export const Vehicle = forwardRef(({ position, scale }, ref) => {
+export const Vehicle = forwardRef(({ position, scale, rotation }, ref) => {
     const rigidBodyRef = useRef(); // Internal ref for the RigidBody
 
     const { scene } = useGLTF("/models/wrx.glb");
@@ -12,7 +12,7 @@ export const Vehicle = forwardRef(({ position, scale }, ref) => {
     useImperativeHandle(ref, () => rigidBodyRef.current);
 
     return (
-        <RigidBody ref={rigidBodyRef} position={position} type="dyanmic" colliders={"hull"} mass={1000}>
+        <RigidBody ref={rigidBodyRef} position={position} rotation = {rotation} type="dyanmic" colliders={"hull"} mass={1000}>
             <primitive object={scene} scale={scale} />  
             {/* <CapsuleCollider position={[0, 0.5, -1]} args={[1,2,10]} rotation={[Math.PI/2,0,0]}  /> */}
         </RigidBody>
