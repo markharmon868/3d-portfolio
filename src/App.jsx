@@ -2,8 +2,9 @@ import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
 import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
-import { KeyboardControls } from "@react-three/drei";
+import { KeyboardControls, Loader } from "@react-three/drei";
 import { Perf } from "r3f-perf";
+
 
 function App() {
 
@@ -27,7 +28,9 @@ function App() {
         </Physics>
       </Suspense>
     </Canvas>
+    <Loader />
     </KeyboardControls>
+    
   );
 }
 

@@ -6,6 +6,7 @@ import { GameController } from "./controllers/GameController";
 import { Docks } from "./lagoon/Docks";
 import { Road } from "./lagoon/Road";
 import { Water } from "./lagoon/Water";
+import { Pullouts } from "./pullouts/Pullouts";
 
 
 
@@ -23,6 +24,7 @@ export const Experience = () => {
       <Road />
       <Docks />
       <Water />
+      <Pullouts />
     </>
   );
 };
