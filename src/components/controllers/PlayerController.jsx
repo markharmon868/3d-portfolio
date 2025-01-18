@@ -61,39 +61,24 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
             const playerPosition = new Vector3().copy(rb.current.translation());
             const vehicleStartPosition = new Vector3(0, 0, -60); // Example vehicle position
             
-            // console.log(vehicleRef.current)
             const distanceToStart = playerPosition.distanceTo(vehicleStartPosition);
-            console.log(hasEnteredVehicle);
             
             if (!hasEnteredVehicle) {
                 if (distanceToStart < 6) {
                     isNearVehicle = true;
-                    // console.log("Near vehicle");
                 }   else {
                     isNearVehicle = false;
-                    // console.log("Not near vehicle");
                 }
             };
             if (vehicleRef.current) {
-                console.log(vehicleRef.current);
                 const vehiclePosition = vehicleRef.current.translation();
                 const distance = playerPosition.distanceTo(vehiclePosition);
-                console.log(distance);
                 if (distance < 10) {
                     isNearVehicle = true;
-                    console.log("Near vehicle");
                 } else {
                     isNearVehicle = false;
-                    console.log("Not near vehicle");
                 }
             };
-            // if (distance < 6 || distanceToStart < 6) {
-            //     isNearVehicle = true;
-            //     console.log("Near vehicle");
-            // } else  if (distance > 6 || distanceToStart > 6) {
-            //     isNearVehicle = false;
-            //     console.log("Not near vehicle");
-            // }
         };
 
         const interval = setInterval(checkProximity, 1000); // Check proximity periodically
@@ -104,7 +89,6 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
     useEffect(() => {
         const handleKeyDown = (event) => {
             if ((event.key === "e" || event.key =="E") && onEnterVehicle && isNearVehicle) {
-                console.log("Switching to VehicleController..."); // Debugging log
                 onEnterVehicle();
                 hasEnteredVehicle = true;
             }
@@ -196,20 +180,38 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
         <>
             {/* Popup */}
             {showPopup && (
-                <Text
-                    position={[-2, 10, -37]} // Position relative to player
-                    rotation = {[0, Math.PI, 0]}
-                    fontSize={0.7}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                    maxWidth={10}
-                    outlineWidth={0.1}
-                    outlineColor="black"
-                    textAlign="center"
-                >
-                    Welcome to my version of the Bolinas-Stinson Lagoon. Drive around and explore my projects!
-                </Text>
+                <>
+                    <Text
+                        position={[-2, 10, -37]} // Position relative to player
+                        rotation = {[0, Math.PI, 0]}
+                        fontSize={0.7}
+                        color="white"
+                        anchorX="center"
+                        anchorY="middle"
+                        maxWidth={10}
+                        outlineWidth={0.1}
+                        outlineColor="black"
+                        textAlign="center"
+                    >
+                        Welcome to my version of the Bolinas-Stinson Lagoon. Drive around and explore my projects!
+                    </Text>
+
+                    <Text
+                        position={[3, 10.5, -63]} // Position relative to player
+                        rotation = {[0, Math.PI * -0.2, 0]}
+                        fontSize={0.7}
+                        color="white"
+                        anchorX="center"
+                        anchorY="middle"
+                        maxWidth={10}
+                        outlineWidth={0.1}
+                        outlineColor="black"
+                        textAlign="center"
+                    >
+                        Press "e" and get in the car!
+                    </Text>
+                </>
+
             )}
         
             

@@ -11,7 +11,7 @@ export const GameController = () => {
     const playerRef = useRef(); // Reference to the PlayerController
 
     const handleSwitchToVehicle = () => {
-        console.log("Switching to vehicle controller");
+        // console.log("Switching to vehicle controller");
         setActiveController("vehicle");
     };
 
