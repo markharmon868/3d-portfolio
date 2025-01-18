@@ -5,7 +5,7 @@ import { VehicleController } from "./VehicleController";
 
 export const GameController = () => {
     const [activeController, setActiveController] = useState("player"); // "player" or "vehicle"
-    const [playerStartPosition, setPlayerStartPosition] = useState([-10, 0, -50]);
+    const [playerStartPosition, setPlayerStartPosition] = useState([-4.5, 0, -45]);
 
     const vehicleRef = useRef(); // Reference to the Vehicle
     const playerRef = useRef(); // Reference to the PlayerController

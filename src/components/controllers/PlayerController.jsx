@@ -182,7 +182,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
             {showPopup && (
                 <>
                     <Text
-                        position={[-2, 10, -37]} // Position relative to player
+                        position={[-4.5, 10, -36]} // Position relative to player
                         rotation = {[0, Math.PI, 0]}
                         fontSize={0.7}
                         color="white"
@@ -193,7 +193,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                         outlineColor="black"
                         textAlign="center"
                     >
-                        Welcome to my version of the Bolinas-Stinson Lagoon. Drive around and explore my projects!
+                        Welcome to the Bolinas Lagoon.                               Drive around and check out my projects!
                     </Text>
 
                     <Text
