@@ -1,65 +1,81 @@
-import { useRef, useState, useEffect, forwardRef } from "react";
 import { RigidBody, CapsuleCollider } from "@react-three/rapier";
-import { useGLTF, useKeyboardControls, Text } from "@react-three/drei";
-import { Vector3, MathUtils } from "three";
-import { useFrame, createPortal } from "@react-three/fiber";
+import { OrbitControls, useGLTF, useKeyboardControls, Text } from "@react-three/drei";
+import { useRef, useState, useEffect } from "react";
+import { Vector3 } from "three";
+import { useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
+import { MathUtils } from "three";
 import { degToRad } from "three/src/math/MathUtils";
-import { Player } from "../assets/Player";
+import { Quaternion } from "three";
+import { Player } from "../Assets/Player";
+import { useThree } from "@react-three/fiber";
+import * as THREE from "three";
 
 
-export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPosition}, ref) => {
+import React, { forwardRef } from "react";
 
-    const ypos = 10;
+let rotateAngle = new Vector3(0, 1, 0);
+let rotateQuaternion = new Quaternion();
+let cameraTarget = new Vector3();
+let walkDirection = new Vector3();
 
-    // const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED} = useControls("Character Control", {
-    //     WALK_SPEED: {value: 2.1, min: 0.1, max: 4, step: 0.1},
-    //     RUN_SPEED: {value: 4.2, min: 0.2, max: 12, step: 0.1},
-    //     ROTATION_SPEED: {
-    //         value: degToRad(0.5),
-    //         min: degToRad(0.1),
-    //         max: degToRad(5),
-    //         step: degToRad(0.1),
-    //     },
-    // });
-    const WALK_SPEED = 4;
-    const RUN_SPEED = 8;
-    const ROTATION_SPEED = degToRad(0.8);
+export const PlayerController = forwardRef(({ onEnterVehicle, vehicleRef, startPosition }, ref) => {
+    const ypos = 30;
+
+    const WALK_SPEED = 5;
+    const RUN_SPEED = 10;
 
 
     // refs
     const rb = useRef();
     const character = useRef();
     const container = useRef();
+    const [, get] = useKeyboardControls();
+    const controlsRef = useRef();
+    const camera = useThree(state => state.camera);
 
-    const [animation, setAnimation] = useState(" ");
+    const [animation, setAnimation] = useState("idle");
     const [isJumping, setIsJumping] = useState(false);
 
-    const characterRotationTarget = useRef(0);
-    const rotationTarget = useRef(0);
-    const cameraTarget = useRef();
-    const cameraPosition = useRef();
-
-    const cameraWorldPosition = useRef(new Vector3());
-    const cameraLookAtWorldPosition = useRef(new Vector3());
-    const cameraLookAt = useRef(new Vector3());
-
-    const [, get] = useKeyboardControls();
     var hasEnteredVehicle = false;
 
     const [showPopup, setShowPopup] = useState(true); // State for popup visibility
-
-
-
-    // Proximity check state
     var isNearVehicle = false;
 
+
+    // Initialize Camera
+    useEffect(() => {
+        if (startPosition && camera) {
+            // Set initial camera position relative to player
+            camera.position.set(
+                startPosition[0],
+                startPosition[1] + 5,
+                startPosition[2] - 10
+            );
+
+            // Set initial target for OrbitControls
+            if (controlsRef.current) {
+                controlsRef.current.target.set(
+                    startPosition[0],
+                    startPosition[1] + 1,
+                    startPosition[2]
+                );
+                
+                // Configure OrbitControls
+                controlsRef.current.enableDamping = true;
+                controlsRef.current.dampingFactor = 0.05;
+                controlsRef.current.maxPolarAngle = Math.PI / 1.5;
+                controlsRef.current.minDistance = 5;
+                controlsRef.current.maxDistance = 15;
+            }
+        }
+    }, [startPosition, camera]);
 
     // Proximity check logic
     useEffect(() => {
         const checkProximity = () => {
             const playerPosition = new Vector3().copy(rb.current.translation());
-            const vehicleStartPosition = new Vector3(0, 0, -60); // Example vehicle position
+            const vehicleStartPosition = new Vector3(0, 8, -60); // Example vehicle position
             
             const distanceToStart = playerPosition.distanceTo(vehicleStartPosition);
             
@@ -80,6 +96,7 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                 }
             };
         };
+        
 
         const interval = setInterval(checkProximity, 1000); // Check proximity periodically
         return () => clearInterval(interval);
@@ -102,78 +119,75 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
     }, [onEnterVehicle]);
 
 
-
-    useFrame(({ camera }) => {
-
+    useFrame((state, delta) => {
         if (rb.current) {
+            let speed = 0;
             const vel = rb.current.linvel();
+            const position = rb.current.translation();
+
             const movement = { x: 0, z: 0, y: vel.y };
 
-            if (get().forward) movement.z = 1;
-            if (get().backward) movement.z = -1;
-            if (get().left) movement.x = 1;
-            if (get().right) movement.x = -1;
+            if (get().forward) { movement.z = 1; }
+            if (get().backward) { movement.z = -1; }
+            if (get().left) { movement.x = 1; }
+            if (get().right) { movement.x = -1; }
             if (get().jump && !isJumping) {
                 movement.y = 5;
                 setIsJumping(true);
-                setAnimation("jumping");
             }
-            
-
-            if (movement.x !== 0){
-                rotationTarget.current += ROTATION_SPEED * movement.x;
-            }
-
-            let speed = get().run ? RUN_SPEED : WALK_SPEED;
-
 
             if (movement.y !== 0 && !isJumping) {
                 vel.y = movement.y;
-                setAnimation("jumping");
             } 
-
-            if (movement.z !== 0 || movement.x !== 0) {
-                characterRotationTarget.current = Math.atan2(movement.x, movement.z);
-                vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
-                vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
-                if (speed === RUN_SPEED || speed == WALK_SPEED) {
-                    setAnimation("running");
-                }
-
             
-            } else {
-                setAnimation("idle");
-            }
-            character.current.rotation.y = MathUtils.lerp(
-                character.current.rotation.y,
-                characterRotationTarget.current,
-                0.1
+            speed = (movement.x !== 0 || movement.z !== 0) ? (get().run ? RUN_SPEED : WALK_SPEED) : 0;
+            setAnimation((movement.x !== 0 || movement.z !== 0) ? "running" : "idle");
+
+            const directionOffset = Math.atan2(movement.x, movement.z);
+
+            // Calculate angle between camera and movement
+            let angleYCameraDirection = Math.atan2(
+                camera.position.x - position.x,
+                camera.position.z - position.z
             );
 
+            // Update character rotation
+            rotateQuaternion.setFromAxisAngle(rotateAngle, angleYCameraDirection + directionOffset);
+            const currentRotation = rb.current.rotation();
+            const currentQuaternion = new Quaternion(
+                currentRotation.x,
+                currentRotation.y,
+                currentRotation.z,
+                currentRotation.w
+            );
+            currentQuaternion.rotateTowards(rotateQuaternion, 0.1);
+            rb.current.setRotation(currentQuaternion, true);
+
+            // Update movement direction
+            camera.getWorldDirection(walkDirection);
+            walkDirection.y = 0;
+            walkDirection.normalize();
+            walkDirection.applyAxisAngle(rotateAngle, directionOffset);
+
+            // Update velocity
+            vel.x = walkDirection.x * speed;
+            vel.z = walkDirection.z * speed;
             rb.current.setLinvel(vel, true);
-            
+
             if (Math.abs(vel.y) < 0.01 && isJumping) {
                 setIsJumping(false);
                 setAnimation("idle");
             }
+
+            // Update OrbitControls target to follow player
+            if (controlsRef.current) {
+                controlsRef.current.target.set(
+                    position.x,
+                    position.y + 1,
+                    position.z
+                );
+            }
         }
-
-
-        // CAMERA
-        container.current.rotation.y = MathUtils.lerp(
-            container.current.rotation.y,
-            rotationTarget.current,
-            0.1
-        )
-
-        cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-        camera.position.lerp(cameraWorldPosition.current, 0.1);
-
-        if(cameraTarget.current)
-            cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
-            cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
-
-            camera.lookAt(cameraLookAt.current);
     });
 
     return (
@@ -213,21 +227,25 @@ export const PlayerController = forwardRef(({onEnterVehicle, vehicleRef, startPo
                 </>
 
             )}
-        
-            
-            <RigidBody colliders={false} lockRotations ref={rb} 
-                position={startPosition}
-            >
-                <group ref={container} > 
-                    <group ref={cameraTarget} position-y = {ypos} position-z={1.5} />
-                    <group ref={cameraPosition} position={[0, ypos+2, -10]} />
-                    <group ref={character}>
-                        <Player scale={[1,1,1]} position={[0, ypos-1.85, 0]} animation={animation}/>
+            <group ref={ref}>
+                <RigidBody colliders={false} lockRotations ref={rb} position={startPosition}>
+                    <group ref={container}>
+                        <OrbitControls 
+                            ref={controlsRef}
+                            makeDefault
+                        />
+                        <group ref={character} position={[0, 0, 0]}>
+                            <Player 
+                                scale={[1, 1, 1]} 
+                                position={[0, 0, 0]} 
+                                animation={animation} 
+                                rotation={[0, Math.PI, 0]}
+                            />
+                        </group>
                     </group>
-                </group>
-                <CapsuleCollider args = {[0.55, 0.3]} position={[0, ypos-1, 0]} friction={10}/> 
-            </RigidBody>
+                    <CapsuleCollider position={[0, 1, 0]} args={[0.5, 0.5]} />
+                </RigidBody>
+            </group>
         </>
     );
 });
-

@@ -7,8 +7,8 @@ export const Blender = () => {
 
     return (
         <>
-            <GarnettVideo position={[-68,9,-28]} rotation = {[0,Math.PI * 0.6,0]} scale = {[2,2,2]}/>
-            <SkateVideo position={[-65,9,-40]} rotation = {[0,Math.PI * 0.3,0]} scale = {[3,3,3]}/>
+            <GarnettVideo position={[-68,10,-28]} rotation = {[0,Math.PI * 0.6,0]} scale = {[3,3,3]}/>
+            <SkateVideo position={[-65,10,-40]} rotation = {[0,Math.PI * 0.3,0]} scale = {[5,5,5]}/>
             <Text 
                 position={[-66,9.6,-35]} 
                 rotation = {[0,Math.PI * 0.46,0]} 

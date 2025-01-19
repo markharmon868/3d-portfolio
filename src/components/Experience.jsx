@@ -10,6 +10,7 @@ import { Pullouts } from "./pullouts/Pullouts";
 
 
 
+
 export const Experience = () => {
   return (
     <>
@@ -18,6 +19,7 @@ export const Experience = () => {
       <hemisphereLight intensity={0.3} color={"#a8c7ff"}/>
       <directionalLight position={[-10, 10, 0]} intensity={0.2} />
       <spotLight position={[0, 100, -60]} angle={75} color={"#ffa95c"} intensity={40} castShadow />
+      {/* <OrbitControls /> */}
       <GameController/>
 
       <Terrain />

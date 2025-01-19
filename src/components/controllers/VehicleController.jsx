@@ -52,13 +52,13 @@ export const VehicleController = ({ vehicleRef, onExitVehicle }) => {
             vel.x = forwardForce * -Math.sin(currentRotation);
             vel.z = forwardForce * Math.cos(currentRotation);
         } else if (movement.z === -1) {
-            if (speed > 0.1) {
+            if (speed > 0.4) {
                 // Gradually decelerate when moving forward
                 vel.x *= BREAK_FORCE;
                 vel.z *= BREAK_FORCE;
             } else {
                 // Move backward only when stopped
-                const backwardForce = -BASE_ACCELERATION;
+                const backwardForce = -BASE_ACCELERATION * 0.2;
                 vel.x = backwardForce * -Math.sin(currentRotation);
                 vel.z = backwardForce * Math.cos(currentRotation);
             }
@@ -68,10 +68,10 @@ export const VehicleController = ({ vehicleRef, onExitVehicle }) => {
             vel.z *= FRICTION;
 
             // Align velocity with current rotation during deceleration
-            if (speed > 0.1) {
-                vel.x = speed * -Math.sin(currentRotation);
-                vel.z = speed * Math.cos(currentRotation);
-            }
+            // if (speed > 0.1) {
+            //     vel.x = speed * -Math.sin(currentRotation);
+            //     vel.z = speed * Math.cos(currentRotation);
+            // }
         }
 
         vehicleRef.current.setLinvel(vel, true);

@@ -2,8 +2,11 @@ import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
 import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
-import { KeyboardControls, Loader } from "@react-three/drei";
+import { KeyboardControls, Loader, OrbitControls } from "@react-three/drei";
+import { useEffect } from "react";
+
 // import { Perf } from "r3f-perf";
+
 
 
 function App() {
@@ -23,6 +26,7 @@ function App() {
       <Canvas shadows camera={{ position: [10, 10, 5], fov: 30 }}>
         {/* <Perf position="top-left"/> */}
         <color attach="background" args={["#a8c7ff"]} />
+        
         <Suspense fallback={null}>
           <Physics debug={false}>
             <Experience />

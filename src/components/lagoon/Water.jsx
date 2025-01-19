@@ -6,7 +6,7 @@ import { ImprovedNoise } from "./ImprovedNoise";
 export const Water = () => {
   const meshRef = useRef();
   const noise = new ImprovedNoise(); // Instantiate the noise class
-  const size = 100; // Plane size
+  const size = 155; // Plane size
   const segments = 50; // Number of segments
   const frequency = 0.05; // Frequency of the noise
   const amplitude = 0.1; // Amplitude of the noise

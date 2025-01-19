@@ -2,10 +2,11 @@ import React, { useState, useRef } from "react";
 import { PlayerController } from "./PlayerController";
 import { Vehicle } from "../assets/Vehicle";
 import { VehicleController } from "./VehicleController";
+import { OrbitControls } from "@react-three/drei";
 
 export const GameController = () => {
     const [activeController, setActiveController] = useState("player"); // "player" or "vehicle"
-    const [playerStartPosition, setPlayerStartPosition] = useState([-4.5, 0, -45]);
+    const [playerStartPosition, setPlayerStartPosition] = useState([-4.5, 8, -55]);
 
     const vehicleRef = useRef(); // Reference to the Vehicle
     const playerRef = useRef(); // Reference to the PlayerController
@@ -22,7 +23,7 @@ export const GameController = () => {
         // Set player position 2 units to the right of the vehicle
         setPlayerStartPosition([
             vehiclePosition.x + 2,
-            vehiclePosition.y - 7,
+            vehiclePosition.y ,
             vehiclePosition.z
         ]);
 
@@ -31,6 +32,7 @@ export const GameController = () => {
 
     return (
         <>
+            
             {/* Vehicle */}
             <Vehicle ref={vehicleRef} position={[0, 8, -62]} rotation = {[0, Math.PI * 0.25, 0]} scale={[1.75,1.75,1.75]} />
 

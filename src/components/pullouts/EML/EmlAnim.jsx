@@ -38,8 +38,8 @@ export const EmlAnim = () => {
         
             <primitive object={scene} />
             <Text 
-                position = {[pos.x -10, pos.y + 1, pos.z+5]}
-                rotation = {[0, Math.PI , 0]}
+                position = {[pos.x -12, pos.y + 3, pos.z+7]}
+                rotation = {[0, Math.PI* 1.01 , 0]}
                 fontSize={0.55}
                 color="white"
                 anchorX="center"
