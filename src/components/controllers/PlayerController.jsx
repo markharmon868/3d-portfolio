@@ -7,7 +7,7 @@ import { useControls } from "leva";
 import { MathUtils } from "three";
 import { degToRad } from "three/src/math/MathUtils";
 import { Quaternion } from "three";
-import { Player } from "../Assets/Player";
+import { Player } from "../assets/Player";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
