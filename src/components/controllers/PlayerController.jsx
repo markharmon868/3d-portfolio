@@ -141,7 +141,12 @@ export const PlayerController = forwardRef(({ onEnterVehicle, vehicleRef, startP
             } 
             
             speed = (movement.x !== 0 || movement.z !== 0) ? (get().run ? RUN_SPEED : WALK_SPEED) : 0;
-            setAnimation((movement.x !== 0 || movement.z !== 0) ? "running" : "idle");
+
+            if (movement.x !== 0 || movement.z !== 0) {
+                setAnimation("running");
+            } else {
+                setAnimation("idle"); 
+            }
 
             const directionOffset = Math.atan2(movement.x, movement.z);
 

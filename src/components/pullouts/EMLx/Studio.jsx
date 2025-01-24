@@ -11,7 +11,7 @@ export const Studios = () => {
         <>
             <primitive object={scene} />
             <Text 
-                position = {[pos.x +1, pos.y + 2, pos.z+14]}
+                position = {[pos.x +1, pos.y + 3, pos.z+14]}
                 rotation = {[0, Math.PI * -0.5, 0]}
                 fontSize={0.6}
                 color="white"

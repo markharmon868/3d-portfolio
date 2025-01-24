@@ -21,7 +21,7 @@ export const Blender = () => {
                 outlineColor="black"
                 textAlign="center"
             >
-                My love for 3D all started with Blender. These are some of my animations. Also everything else in this wrold was made by my in Blender.
+                My love for 3D all started with Blender. These are some of my animations. Also everything else in this wrold was made by me in Blender.
             </Text>
         </>
     )

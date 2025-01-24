@@ -6,7 +6,7 @@ import { OrbitControls } from "@react-three/drei";
 
 export const GameController = () => {
     const [activeController, setActiveController] = useState("player"); // "player" or "vehicle"
-    const [playerStartPosition, setPlayerStartPosition] = useState([-4.5, 8, -55]);
+    const [playerStartPosition, setPlayerStartPosition] = useState([-4.5, 11, -55]);
 
     const vehicleRef = useRef(); // Reference to the Vehicle
     const playerRef = useRef(); // Reference to the PlayerController
