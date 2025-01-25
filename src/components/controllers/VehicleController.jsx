@@ -1,112 +1,79 @@
-import { RigidBody } from "@react-three/rapier";
-import { useKeyboardControls } from "@react-three/drei";
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { MathUtils, Quaternion, Euler, Vector3 } from "three";
-import { useEffect } from "react";
+import { useRef, useState, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
+import { useVehicleController } from './useVehicleControls';
+import { useKeyboardControls } from '@react-three/drei';
 
-export const VehicleController = ({ vehicleRef, onExitVehicle }) => {
+const VehicleController = ({ chassisBodyRef, wheelsRef, wheels, onExitVehicle }) => {
+    const { vehicleController } = useVehicleController(chassisBodyRef, wheelsRef, wheels);
+    const camera = useThree((state) => state.camera);
+
+    const cameraOffset = new THREE.Vector3(12, 4, 0);
+    const cameraTargetOffset = new THREE.Vector3(-2, 1.5, 0);
+
+    const [smoothedCameraPosition] = useState(new THREE.Vector3(0, 10, -30));
+    const [smoothedCameraTarget] = useState(new THREE.Vector3());
+
     const [, get] = useKeyboardControls();
 
-    const BASE_ACCELERATION = 15; // Forward/backward force
-    const FRICTION = 0.99; // Friction for gradual deceleration
-    const STEERING_SPEED = MathUtils.degToRad(1);
-    const BREAK_FORCE = 0.985; // Gradual deceleration when moving forward
+    const accelerateForce = 35;
+    const brakeForce = 1;
+    const steerAngle = 0.3;
 
-    const container = useRef();
-    const rotationTarget = useRef(0);
-    const cameraTarget = useRef();
-    const cameraPosition = useRef();
-    const cameraWorldPosition = useRef(new Vector3());
-    const cameraLookAtWorldPosition = useRef(new Vector3());
-    const cameraLookAt = useRef(new Vector3());
+    useFrame((state, delta) => {
+        if (!vehicleController.current) return;
 
-    
+        const t = 1.0 - Math.pow(0.01, delta);
 
-    useFrame(({ camera }) => {
-        if (!vehicleRef.current) return;
+        const controller = vehicleController.current;
+        const chassisRigidBody = controller.chassis();
 
-        const vel = vehicleRef.current.linvel();
-        const movement = {
-            x: 0,
-            z: 0,
-        };
+        const movement = { x: 0, y: 0, z: 0 };
 
         if (get().forward) movement.z = 1;
         if (get().backward) movement.z = -1;
-        if (get().left) movement.x = -1;
-        if (get().right) movement.x = 1;
+        if (get().left) movement.x = 1;
+        if (get().right) movement.x = -1;
+        if (get().jump) movement.y = 1;
 
-        // Steering logic
-        if (movement.x !== 0) {
-            rotationTarget.current += movement.x * STEERING_SPEED;
-        }
+        const engineForce = movement.z === 1 ? movement.z * accelerateForce : movement.z * 0.5 * accelerateForce;
+        controller.setWheelEngineForce(0, engineForce);
+        controller.setWheelEngineForce(1, engineForce);
+        controller.setWheelEngineForce(2, engineForce);
+        controller.setWheelEngineForce(3, engineForce);
 
-        // Calculate speed and rotation
-        const currentRotation = rotationTarget.current;
-        const speed = Math.sqrt(vel.x * vel.x + vel.z * vel.z);
+        const wheelBrake = movement.y * brakeForce;
+        controller.setWheelBrake(2, wheelBrake);
+        controller.setWheelBrake(3, wheelBrake);
 
-        if (movement.z === 1) {
-            // Forward movement
-            const forwardForce = BASE_ACCELERATION;
-            vel.x = forwardForce * -Math.sin(currentRotation);
-            vel.z = forwardForce * Math.cos(currentRotation);
-        } else if (movement.z === -1) {
-            if (speed > 0.4) {
-                // Gradually decelerate when moving forward
-                vel.x *= BREAK_FORCE;
-                vel.z *= BREAK_FORCE;
-            } else {
-                // Move backward only when stopped
-                const backwardForce = -BASE_ACCELERATION * 0.2;
-                vel.x = backwardForce * -Math.sin(currentRotation);
-                vel.z = backwardForce * Math.cos(currentRotation);
-            }
-        } else {
-            // Gradual deceleration when no input
-            vel.x *= FRICTION;
-            vel.z *= FRICTION;
+        const steerDirection = movement.x;
+        const currentSteering = controller.wheelSteering(0) || 0;
+        const steering = THREE.MathUtils.lerp(currentSteering, steerAngle * steerDirection, 0.5);
+        controller.setWheelSteering(0, steering);
+        controller.setWheelSteering(1, steering);
 
-            // Align velocity with current rotation during deceleration
-            // if (speed > 0.1) {
-            //     vel.x = speed * -Math.sin(currentRotation);
-            //     vel.z = speed * Math.cos(currentRotation);
-            // }
-        }
-
-        vehicleRef.current.setLinvel(vel, true);
-
-        // Rotate the rigid body to match the steering direction
-        const quaternion = new Quaternion();
-        const euler = new Euler(0, -rotationTarget.current, 0, "XYZ");
-        quaternion.setFromEuler(euler);
-        vehicleRef.current.setRotation(quaternion, true);
-
-        // Update camera container position to match vehicle
-        const vehiclePos = vehicleRef.current.translation();
-        if (container.current) {
-            container.current.position.x = vehiclePos.x;
-            container.current.position.y = vehiclePos.y;
-            container.current.position.z = vehiclePos.z;
-        }
-
-        // CAMERA
-        container.current.rotation.y = MathUtils.lerp(
-            container.current.rotation.y,
-            -rotationTarget.current,
-            0.1
+        const chassisTranslation = new THREE.Vector3(
+            chassisRigidBody.translation().x,
+            chassisRigidBody.translation().y,
+            chassisRigidBody.translation().z
+        );
+        const chassisRotation = new THREE.Quaternion(
+            chassisRigidBody.rotation().x,
+            chassisRigidBody.rotation().y,
+            chassisRigidBody.rotation().z,
+            chassisRigidBody.rotation().w
         );
 
-        // Update camera position
-        cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-        camera.position.lerp(cameraWorldPosition.current, 0.5);
+        const rotatedCameraOffset = cameraOffset.clone().applyQuaternion(chassisRotation);
+        const rotatedCameraTargetOffset = cameraTargetOffset.clone().applyQuaternion(chassisRotation);
 
-        // Update camera look target
-        if (cameraTarget.current) {
-            cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
-        }
-        cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.5);
-        camera.lookAt(cameraLookAt.current);
+        const cameraPosition = chassisTranslation.clone().add(rotatedCameraOffset);
+        smoothedCameraPosition.lerp(cameraPosition, t);
+        state.camera.position.copy(smoothedCameraPosition);
+
+        const cameraTarget = chassisTranslation.clone().add(rotatedCameraTargetOffset);
+        smoothedCameraTarget.lerp(cameraTarget, t);
+        state.camera.lookAt(smoothedCameraTarget);
     });
 
     // Handle exit vehicle key
@@ -121,10 +88,7 @@ export const VehicleController = ({ vehicleRef, onExitVehicle }) => {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [onExitVehicle]);
 
-    return (
-        <group ref={container}>
-            <group ref={cameraTarget} position-z={10} />
-            <group ref={cameraPosition} position={[0, 8, -15]} /> {/* Adjust these values to change camera distance/height */}
-        </group>
-    );
+    return null;
 };
+
+export default VehicleController;

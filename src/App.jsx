@@ -28,7 +28,7 @@ function App() {
         <color attach="background" args={["#a8c7ff"]} />
         
         <Suspense fallback={null}>
-          <Physics debug={false}>
+          <Physics debug={true}>
             <Experience />
           </Physics>
         </Suspense>
