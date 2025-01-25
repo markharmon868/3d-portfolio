@@ -16,7 +16,7 @@ const VehicleController = ({ chassisBodyRef, wheelsRef, wheels, onExitVehicle })
 
     const [, get] = useKeyboardControls();
 
-    const accelerateForce = 35;
+    const accelerateForce = 20;
     const brakeForce = 1;
     const steerAngle = 0.3;
 
@@ -79,8 +79,24 @@ const VehicleController = ({ chassisBodyRef, wheelsRef, wheels, onExitVehicle })
     // Handle exit vehicle key
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === "e") {
+            if ((event.key === "e") || (event.key === "E")) {
                 onExitVehicle();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [onExitVehicle]);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "r") {
+                chassisBodyRef.current.setTranslation(new THREE.Vector3(0, 8, -65));
+                chassisBodyRef.current.setLinvel(new THREE.Vector3(0, 0, 0));
+                chassisBodyRef.current.setRotation({x:0, y:Math.PI * 0.8, z:0, w:1});
+                cameraOffset.set(12, 4, 0);
+                cameraTargetOffset.set(-2, 1.5, 0);
+                camera.position.set(0, 10, -30);
             }
         };
 

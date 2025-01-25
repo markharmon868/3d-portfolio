@@ -45,8 +45,29 @@ function App() {
         }}
       >
         <img
-          src="/controls-overlay.png" // Replace with your image path
+          src="/player-controls.png" // Replace with your image path
           alt="Overlay"
+          style={{
+            width: "300px",  // Set the width of the image
+            height: "auto",  // Maintain the aspect ratio
+            opacity: 0.8,    // Adjust transparency
+          }}
+        />
+      </div>
+
+      {/* Vehicle Controls Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20px", // Adjust distance from the bottom of the screen
+          right: "20px",  // Adjust distance from the right of the screen
+          pointerEvents: "none", // Allow clicks to pass through
+          zIndex: 1000,  // Ensure it stays above the canvas
+        }}
+      >
+        <img
+          src="/car-controls.png" // Replace with your vehicle controls image path
+          alt="Vehicle Controls"
           style={{
             width: "300px",  // Set the width of the image
             height: "auto",  // Maintain the aspect ratio

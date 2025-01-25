@@ -19,7 +19,7 @@ const Vehicle = ({ position, rotation, wheels, chassisBodyRef, wheelsRef, isCont
             type="dynamic"
         >
             {/* Chassis Collider */}
-            <CuboidCollider args={[2.6, 0.7, 0.9]} position={[-0.25, 0.45, 0]} />
+            <CuboidCollider args={[2.6, 0.5, 0.9]} position={[-0.25, 0.35, 0]} />
 
             {/* Chassis */}
             <primitive
