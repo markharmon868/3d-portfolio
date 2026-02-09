@@ -45,7 +45,7 @@ function App() {
         }}
       >
         <img
-          src="/player-controls.png" // Replace with your image path
+          src="./player-controls.png" // Replace with your image path
           alt="Overlay"
           style={{
             width: "300px",  // Set the width of the image
@@ -66,7 +66,7 @@ function App() {
         }}
       >
         <img
-          src="/car-controls.png" // Replace with your vehicle controls image path
+          src="./car-controls.png" // Replace with your vehicle controls image path
           alt="Vehicle Controls"
           style={{
             width: "300px",  // Set the width of the image
