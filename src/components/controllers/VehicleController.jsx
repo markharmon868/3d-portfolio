@@ -90,7 +90,7 @@ const VehicleController = ({ chassisBodyRef, wheelsRef, wheels, onExitVehicle })
 
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === "r") {
+            if ((event.key === "r") || (event.key === "R")) {
                 chassisBodyRef.current.setTranslation(new THREE.Vector3(0, 8, -65));
                 chassisBodyRef.current.setLinvel(new THREE.Vector3(0, 0, 0));
                 chassisBodyRef.current.setRotation({x:0, y:Math.PI * 0.8, z:0, w:1});

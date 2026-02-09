@@ -2,7 +2,7 @@ import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
 
 export const Docks = () => {
-    const { scene } = useGLTF("/models/docks.glb");
+    const { scene } = useGLTF("./models/docks.glb");
 
 
     return (
@@ -14,4 +14,4 @@ export const Docks = () => {
     );
 };
 
-useGLTF.preload("/models/docks.glb");
+useGLTF.preload("./models/docks.glb");

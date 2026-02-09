@@ -1,7 +1,7 @@
 import { useGLTF, Text } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
-const path = "/models/studios.glb";
+const path = "./models/studios.glb";
 
 export const Studios = () => {
     
@@ -32,4 +32,4 @@ export const Studios = () => {
     );
 }
 
-useGLTF.preload("/models/studios.glb");
+useGLTF.preload("./models/studios.glb");

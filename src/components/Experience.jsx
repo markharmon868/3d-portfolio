@@ -36,4 +36,4 @@ export const Experience = () => {
   );
 };
 
-useGLTF.preload("/models/island_and_road.glb");
+useGLTF.preload("./models/island_and_road.glb");

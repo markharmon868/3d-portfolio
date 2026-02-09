@@ -6,7 +6,7 @@ import { CuboidCollider, RigidBody } from '@react-three/rapier';
 
 
 export const SkateVideo = ({...props}) => {
-    const texture = useVideoTexture('/videos/skater-video.mp4');
+    const texture = useVideoTexture('./videos/skater-video.mp4');
     const group = useRef();
 
     return (

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { AnimationMixer } from "three";
 
 export const EmlAnim = () => {
-    const { scene, animations } = useGLTF("/models/earsim.glb");
+    const { scene, animations } = useGLTF("./models/earsim.glb");
     const pos = scene.children[0].position;
     
 

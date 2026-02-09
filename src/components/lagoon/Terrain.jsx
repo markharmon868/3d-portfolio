@@ -2,7 +2,7 @@ import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
 import React, { forwardRef, useEffect } from "react";
 
-const path = "/models/terrain.glb";
+const path = "./models/terrain.glb";
 
 const Terrain = forwardRef((props, ref) => {
   const { scene } = useGLTF(path);

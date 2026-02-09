@@ -6,7 +6,7 @@ import { GarnettVideo } from "./Blender/GwheelVideo";
 import { SkateVideo } from "./Blender/SkateVideo";
 import { Blender } from "./Blender/Blender";
 
-const path = "/models/signs.glb";
+const path = "./models/signs.glb";
 
 export const Pullouts = () => {
 

@@ -6,8 +6,8 @@ import * as THREE from 'three';
 const Vehicle = ({ position, rotation, wheels, chassisBodyRef, wheelsRef, isControllerActive }) => {
     const chassisMeshRef = useRef(null);
 
-    const { scene: chassisModel } = useGLTF('/wrx-chassis.glb');
-    const { scene: wheelModel } = useGLTF('/wrx-wheel.glb');
+    const { scene: chassisModel } = useGLTF('./wrx-chassis.glb');
+    const { scene: wheelModel } = useGLTF('./wrx-wheel.glb');
 
     return (
         <RigidBody

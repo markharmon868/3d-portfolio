@@ -6,7 +6,7 @@ import { useAnimations } from "@react-three/drei";
 export const Player = ({animation, ...props}) => {
     const group = useRef();
 
-    const { scene, animations } = useGLTF("/models/sk8r_animated.glb");
+    const { scene, animations } = useGLTF("./models/sk8r_animated.glb");
     const { actions } = useAnimations(animations, group);
     useEffect(() => {
         actions[animation]?.reset().fadeIn(0.24).play();
@@ -20,4 +20,4 @@ export const Player = ({animation, ...props}) => {
     );
 }
 
-useGLTF.preload("/models/sk8r_animated.glb");
+useGLTF.preload("./models/sk8r_animated.glb");

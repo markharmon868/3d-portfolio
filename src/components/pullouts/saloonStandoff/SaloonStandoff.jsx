@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { Vector3 } from "three";
 import { Text } from "@react-three/drei";
 
-const path = "/models/saloon.glb";
+const path = "./models/saloon.glb";
 
 export const SaloonStandoff = () => {
     
